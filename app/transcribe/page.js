@@ -12,7 +12,7 @@ export default function TranscribePage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [isEnglishOpen, setIsEnglishOpen] = useState(true);
-  const [isOriginalOpen, setIsOriginalOpen] = useState(false);
+  const [isOriginalOpen, setIsOriginalOpen] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -85,6 +85,7 @@ export default function TranscribePage() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent appearance-none"
                   >
                     <option value="auto">Auto-detect</option>
+                    {/* <option value="es">Telugu</option> */}
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
