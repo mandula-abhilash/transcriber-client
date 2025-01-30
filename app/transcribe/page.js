@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Youtube, Languages, Loader2 } from "lucide-react";
+import { Youtube, Languages, Loader2, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -11,6 +11,8 @@ export default function TranscribePage() {
   const [language, setLanguage] = useState("auto");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [isEnglishOpen, setIsEnglishOpen] = useState(true);
+  const [isOriginalOpen, setIsOriginalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,9 +49,9 @@ export default function TranscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
           {/* Left Column - Input Form */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center space-x-3 mb-6">
@@ -118,37 +120,64 @@ export default function TranscribePage() {
           </div>
 
           {/* Right Column - Results */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col">
             <h2 className="text-xl font-bold mb-4">Transcription Results</h2>
             {loading ? (
-              <div className="flex items-center justify-center h-64">
+              <div className="flex-1 flex items-center justify-center">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : result ? (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Original Text</h3>
-                  <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
-                    <p className="whitespace-pre-wrap">
-                      {result.original_text}
-                    </p>
-                  </div>
-                </div>
+              <div className="space-y-4 flex-1 overflow-hidden">
+                {/* English Translation Dropdown */}
                 {result.english_text && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">
-                      English Translation
-                    </h3>
-                    <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
-                      <p className="whitespace-pre-wrap">
-                        {result.english_text}
-                      </p>
-                    </div>
+                  <div className="border rounded-lg">
+                    <button
+                      onClick={() => setIsEnglishOpen(!isEnglishOpen)}
+                      className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors rounded-t-lg"
+                    >
+                      <h3 className="text-lg font-semibold">
+                        English Translation
+                      </h3>
+                      <ChevronDown
+                        className={`w-5 h-5 transition-transform ${
+                          isEnglishOpen ? "transform rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {isEnglishOpen && (
+                      <div className="p-4 max-h-[300px] overflow-y-auto">
+                        <p className="whitespace-pre-wrap">
+                          {result.english_text}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
+
+                {/* Original Text Dropdown */}
+                <div className="border rounded-lg">
+                  <button
+                    onClick={() => setIsOriginalOpen(!isOriginalOpen)}
+                    className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors rounded-t-lg"
+                  >
+                    <h3 className="text-lg font-semibold">Original Text</h3>
+                    <ChevronDown
+                      className={`w-5 h-5 transition-transform ${
+                        isOriginalOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {isOriginalOpen && (
+                    <div className="p-4 max-h-[300px] overflow-y-auto">
+                      <p className="whitespace-pre-wrap">
+                        {result.original_text}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+              <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
                 <Youtube className="w-12 h-12 mb-4 opacity-50" />
                 <p>Enter a YouTube URL to see the transcription results</p>
               </div>
