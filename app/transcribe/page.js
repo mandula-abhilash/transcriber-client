@@ -49,7 +49,7 @@ export default function TranscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       <div className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
           {/* Left Column - Input Form */}
@@ -120,17 +120,17 @@ export default function TranscribePage() {
           </div>
 
           {/* Right Column - Results */}
-          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col">
+          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col h-full">
             <h2 className="text-xl font-bold mb-4">Transcription Results</h2>
             {loading ? (
               <div className="flex-1 flex items-center justify-center">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : result ? (
-              <div className="space-y-4 flex-1 overflow-hidden">
+              <div className="space-y-4 flex-1 overflow-hidden flex flex-col">
                 {/* English Translation Dropdown */}
                 {result.english_text && (
-                  <div className="border rounded-lg">
+                  <div className="border rounded-lg flex-1">
                     <button
                       onClick={() => setIsEnglishOpen(!isEnglishOpen)}
                       className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors rounded-t-lg"
@@ -144,18 +144,22 @@ export default function TranscribePage() {
                         }`}
                       />
                     </button>
-                    {isEnglishOpen && (
-                      <div className="p-4 max-h-[300px] overflow-y-auto">
+                    <div
+                      className={`h-[calc(50vh-12rem)] ${
+                        !isEnglishOpen && "hidden"
+                      }`}
+                    >
+                      <div className="p-4 h-full overflow-y-auto">
                         <p className="whitespace-pre-wrap">
                           {result.english_text}
                         </p>
                       </div>
-                    )}
+                    </div>
                   </div>
                 )}
 
                 {/* Original Text Dropdown */}
-                <div className="border rounded-lg">
+                <div className="border rounded-lg flex-1">
                   <button
                     onClick={() => setIsOriginalOpen(!isOriginalOpen)}
                     className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors rounded-t-lg"
@@ -167,13 +171,17 @@ export default function TranscribePage() {
                       }`}
                     />
                   </button>
-                  {isOriginalOpen && (
-                    <div className="p-4 max-h-[300px] overflow-y-auto">
+                  <div
+                    className={`h-[calc(50vh-12rem)] ${
+                      !isOriginalOpen && "hidden"
+                    }`}
+                  >
+                    <div className="p-4 h-full overflow-y-auto">
                       <p className="whitespace-pre-wrap">
                         {result.original_text}
                       </p>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             ) : (
