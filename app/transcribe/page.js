@@ -32,7 +32,7 @@ export default function TranscribePage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/transcribe",
+        `${process.env.NEXT_PUBLIC_API_URL}/transcribe`,
         {
           url,
           source_language: language === "auto" ? null : language,
