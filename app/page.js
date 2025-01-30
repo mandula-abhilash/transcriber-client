@@ -34,7 +34,7 @@ export default function ApiKeyPage() {
           <div className="bg-primary/10 p-3 rounded-full mb-4">
             <KeyRound className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl text-center font-bold text-gray-900">
             Welcome to YouTube Transcriber
           </h1>
           <p className="text-gray-500 text-center mt-2">
