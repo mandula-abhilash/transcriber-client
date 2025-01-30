@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { KeyRound } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { KeyRound } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ApiKeyPage() {
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    const storedKey = localStorage.getItem('openai_api_key');
+    const storedKey = localStorage.getItem("vd_user_openai_api_key");
     if (storedKey) {
-      router.push('/transcribe');
+      router.push("/transcribe");
     }
   }, [router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!apiKey.trim().startsWith('sk-')) {
-      toast.error('Please enter a valid OpenAI API key');
+    if (!apiKey.trim().startsWith("sk-")) {
+      toast.error("Please enter a valid OpenAI API key");
       return;
     }
-    localStorage.setItem('openai_api_key', apiKey);
-    toast.success('API key saved successfully');
-    router.push('/transcribe');
+    localStorage.setItem("vd_user_openai_api_key", apiKey);
+    toast.success("API key saved successfully");
+    router.push("/transcribe");
   };
 
   return (
@@ -34,7 +34,9 @@ export default function ApiKeyPage() {
           <div className="bg-primary/10 p-3 rounded-full mb-4">
             <KeyRound className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome to YouTube Transcriber</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Welcome to YouTube Transcriber
+          </h1>
           <p className="text-gray-500 text-center mt-2">
             Enter your OpenAI API key to get started with transcription
           </p>
@@ -42,7 +44,10 @@ export default function ApiKeyPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="apiKey" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="apiKey"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               OpenAI API Key
             </label>
             <input

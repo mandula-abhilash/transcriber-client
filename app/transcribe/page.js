@@ -1,43 +1,46 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Youtube, Languages, Loader2 } from 'lucide-react';
-import toast from 'react-hot-toast';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Youtube, Languages, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function TranscribePage() {
-  const [url, setUrl] = useState('');
-  const [language, setLanguage] = useState('auto');
+  const [url, setUrl] = useState("");
+  const [language, setLanguage] = useState("auto");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const apiKey = localStorage.getItem('openai_api_key');
+    const apiKey = localStorage.getItem("vd_user_openai_api_key");
     if (!apiKey) {
-      router.push('/');
+      router.push("/");
     }
   }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
-      toast.error('Please enter a valid YouTube URL');
+    if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
+      toast.error("Please enter a valid YouTube URL");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/transcribe', {
-        url,
-        target_language: language === 'auto' ? null : language,
-        api_key: localStorage.getItem('openai_api_key'),
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/transcribe",
+        {
+          url,
+          source_language: language === "auto" ? null : language,
+          api_key: localStorage.getItem("vd_user_openai_api_key"),
+        }
+      );
       setResult(response.data);
-      toast.success('Transcription completed successfully');
+      toast.success("Transcription completed successfully");
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'An error occurred');
+      toast.error(error.response?.data?.detail || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -126,14 +129,20 @@ export default function TranscribePage() {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Original Text</h3>
                   <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
-                    <p className="whitespace-pre-wrap">{result.original_text}</p>
+                    <p className="whitespace-pre-wrap">
+                      {result.original_text}
+                    </p>
                   </div>
                 </div>
-                {result.translation && (
+                {result.english_text && (
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">English Translation</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      English Translation
+                    </h3>
                     <div className="bg-gray-50 rounded-lg p-4 max-h-[300px] overflow-y-auto">
-                      <p className="whitespace-pre-wrap">{result.translation}</p>
+                      <p className="whitespace-pre-wrap">
+                        {result.english_text}
+                      </p>
                     </div>
                   </div>
                 )}
