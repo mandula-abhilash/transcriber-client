@@ -85,7 +85,7 @@ export default function TranscribePage() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent appearance-none"
                   >
                     <option value="auto">Auto-detect</option>
-                    <option value="es">Telugu</option>
+                    <option value="te">Telugu</option>
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
